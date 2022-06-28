@@ -17,11 +17,11 @@ import { slide } from '@animations';
 export default function HomePage() {
 	const router = useRouter();
 
-	const handleSearchLogin = (login?: string) => {
-		login &&
+	const handleSearchPokemon = (pokemon?: string) => {
+		pokemon &&
 			router.push({
-				pathname: '/user/[login]',
-				query: { login },
+				pathname: '/pokemons/[pokemon]',
+				query: { pokemon },
 			});
 	};
 
@@ -41,7 +41,7 @@ export default function HomePage() {
 				variants={slide}
 			>
 				<Center w="full" h="full">
-					<SearchComponent handleSearchLogin={handleSearchLogin} />
+					<SearchComponent handleSearchPokemon={handleSearchPokemon} />
 				</Center>
 			</MotionContainer>
 		</>

@@ -1,0 +1,20 @@
+query GetPokemonByName($pokemon: PokemonEnum!) {
+	getPokemon(pokemon: $pokemon) {
+		key
+		species
+		types
+		height
+		weight
+		sprite
+		abilities {
+			first
+			second
+			hidden
+		}
+		baseStats {
+			attack
+			defense
+			hp
+		}
+	}
+}

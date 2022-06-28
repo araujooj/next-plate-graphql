@@ -15,7 +15,6 @@ import {
 import { HERO_PATTERN } from '@styles/bgImages';
 
 // --- Components ---
-const SearchHistoryComponent = dynamic(() => import('@components/SearchHistory'));
 const ThemeButtonComponent = dynamic(() => import('@components/ThemeButton'));
 const InfoLinkComponent = dynamic(() => import('@components/InfoLink'));
 
@@ -55,8 +54,6 @@ export default function MainContentComponent({
 				right={[4, 10]}
 				zIndex="overlay"
 			>
-				<SearchHistoryComponent styleProps={buttonStyleProps} />
-
 				<ThemeButtonComponent styleProps={buttonStyleProps} />
 			</Flex>
 

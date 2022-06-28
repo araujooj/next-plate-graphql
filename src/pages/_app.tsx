@@ -1,8 +1,9 @@
 import { AppProps } from 'next/app';
 import { DefaultSeo } from 'next-seo';
 
-// --- React Query ---
-import { QueryClient, QueryClientProvider } from 'react-query';
+// --- Apollo ---
+import { ApolloProvider } from '@apollo/client';
+import { client } from '../services/apollo';
 
 // --- Chakra-UI ---
 import { ChakraProvider } from '@chakra-ui/react';
@@ -17,19 +18,17 @@ import SEO from '@root/next-seo.config';
 // --- Components ---
 import MainContentComponent from '@components/MainContent';
 
-const queryClient = new QueryClient();
-
 export default function _app({ Component, pageProps, router: { route } }: AppProps) {
 	return (
 		<>
 			<DefaultSeo {...SEO} />
-			<QueryClientProvider client={queryClient}>
+			<ApolloProvider client={client}>
 				<ChakraProvider theme={theme}>
 					<MainContentComponent>
 						<Component {...pageProps} key={route} />
 					</MainContentComponent>
 				</ChakraProvider>
-			</QueryClientProvider>
+			</ApolloProvider>
 		</>
 	);
 }

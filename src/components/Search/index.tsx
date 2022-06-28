@@ -25,18 +25,18 @@ import { FiGithub, FiSearch } from 'react-icons/fi';
 
 // --- Validation Schema and Type ---
 const validationSchema = Yup.object().shape({
-	login: Yup.string().required('Login is required!'),
+	pokemon: Yup.string().required('Pokemon is required!'),
 });
 
 type FormType = Yup.InferType<typeof validationSchema>;
 
 // --- Component Props Interface ---
 interface ISearchProps {
-	handleSearchLogin: (login?: string) => void;
+	handleSearchPokemon: (pokemon?: string) => void;
 }
 
 export default function SearchComponent({
-	handleSearchLogin,
+	handleSearchPokemon,
 }: ISearchProps): JSX.Element {
 	const {
 		handleSubmit,
@@ -44,23 +44,19 @@ export default function SearchComponent({
 		formState: { errors, isSubmitting },
 	} = useForm({ resolver: yupResolver(validationSchema), mode: 'onTouched' });
 
-	const onSubmit = ({ login }: FormType) =>
-		new Promise(() => setTimeout(() => handleSearchLogin(login), 500));
+	const onSubmit = ({ pokemon }: FormType) =>
+		new Promise(() => setTimeout(() => handleSearchPokemon(pokemon), 500));
 
 	return (
 		<MotionBox w="full">
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<HStack spacing="2" w="full" alignItems="flex-start" py="2">
-					<FormControl isInvalid={errors.login}>
+					<FormControl isInvalid={errors.pokemon}>
 						<InputGroup size="lg" variant="outline" borderColor="gray.600">
-							<InputLeftElement
-								pointerEvents="none"
-								children={<FiGithub size="1.5rem" color="white" />}
-							/>
 							<Input
-								{...register('login')}
+								{...register('pokemon')}
 								type="text"
-								placeholder="Search GitHub Profile..."
+								placeholder="Search a pokemon"
 								color="whitesmoke"
 								bg="gray.600"
 								borderColor="gray.600"
@@ -70,12 +66,10 @@ export default function SearchComponent({
 								_hover={{ borderColor: 'purple.300' }}
 							/>
 						</InputGroup>
-						{!errors.login ? (
-							<FormHelperText>
-								Insert a valid GitHub Profile to get the data
-							</FormHelperText>
+						{!errors.pokemon ? (
+							<FormHelperText>Insert a valid Pokemon to get the data</FormHelperText>
 						) : (
-							<FormErrorMessage>{errors.login.message}</FormErrorMessage>
+							<FormErrorMessage>{errors.pokemon.message}</FormErrorMessage>
 						)}
 					</FormControl>
 

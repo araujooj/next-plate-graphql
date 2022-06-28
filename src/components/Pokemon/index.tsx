@@ -9,6 +9,8 @@ import {
 	Heading,
 	HStack,
 	Link,
+	List,
+	ListItem,
 	Stack,
 	Text,
 	Wrap,
@@ -19,21 +21,25 @@ import {
 const MotionBox = dynamic(() => import('@components/Motion/MotionBox'));
 
 // --- Icons ---
-import { FiBook, FiGithub, FiMapPin, FiUsers } from 'react-icons/fi';
+import { GiBroadsword, GiCalculator, GiShield } from 'react-icons/gi';
 
 // --- Animations ---
 import { zoom } from '@animations';
-
-// --- Interfaces ---
-import { IUser } from '@interfaces/IUser';
+import {
+	GetPokemonByNameQuery,
+	GetPokemonByNameQueryResult,
+} from '@root/src/graphql/generated';
 
 // --- Component Props Interface ---
-interface IUserProps {
-	user: IUser;
+interface IPokemonProps {
+	pokemon: GetPokemonByNameQuery;
 	constraintsRef?: React.MutableRefObject<any>;
 }
 
-export default function UserComponent({ user, constraintsRef }: IUserProps): JSX.Element {
+export default function PokemonComponent({
+	pokemon,
+	constraintsRef,
+}: IPokemonProps): JSX.Element {
 	return (
 		<MotionBox
 			maxW="2xl"
@@ -55,25 +61,25 @@ export default function UserComponent({ user, constraintsRef }: IUserProps): JSX
 						size="xl"
 						borderWidth="medium"
 						borderColor="purple.300"
-						src={user.avatar_url}
-						name={user.name}
+						src={pokemon.getPokemon.sprite}
+						name={pokemon.getPokemon.key}
 						ignoreFallback
 					/>
 				</Center>
 				<Stack>
 					<Stack spacing="1">
-						{user.name && (
+						{pokemon.getPokemon.key && (
 							<Heading
 								size="lg"
 								lineHeight="none"
 								color="purple.300"
 								textAlign={{ base: 'center', sm: 'left' }}
 							>
-								{user.name}
+								{pokemon.getPokemon.key}
 							</Heading>
 						)}
 						<Link
-							href={user.html_url}
+							href={`https://www.pokemon.com/br/pokedex/${pokemon.getPokemon.key}`}
 							isExternal
 							w={{ base: 'full', md: 'fit-content' }}
 							display="flex"
@@ -83,8 +89,7 @@ export default function UserComponent({ user, constraintsRef }: IUserProps): JSX
 							color="gray.300"
 							_hover={{ color: 'white' }}
 						>
-							<FiGithub />
-							{user.login}
+							{pokemon.getPokemon.types}
 						</Link>
 					</Stack>
 					<Wrap justify={{ base: 'center', sm: 'left' }}>
@@ -97,21 +102,21 @@ export default function UserComponent({ user, constraintsRef }: IUserProps): JSX
 								gap="1"
 								borderRadius="md"
 							>
-								<FiUsers />
+								<GiCalculator />
 								<HStack divider={<Text mx="1">·</Text>}>
 									<HStack>
 										<Text fontSize="sm">
-											<Text as="strong">{user.followers}</Text>
+											<Text as="strong">{pokemon.getPokemon.weight}</Text>
 											<Text as="span" textTransform="none" fontWeight="normal" ml="1">
-												followers
+												weight
 											</Text>
 										</Text>
 									</HStack>
 									<HStack>
 										<Text fontSize="sm">
-											<Text as="strong">{user.following}</Text>
+											<Text as="strong">{pokemon.getPokemon.height}</Text>
 											<Text as="span" textTransform="none" fontWeight="normal" ml="1">
-												following
+												height
 											</Text>
 										</Text>
 									</HStack>
@@ -127,13 +132,13 @@ export default function UserComponent({ user, constraintsRef }: IUserProps): JSX
 								gap="1"
 								borderRadius="md"
 							>
-								<FiBook />
+								<GiBroadsword />
 								<Text as="strong" fontSize="sm">
-									{user.public_repos}
+									{pokemon.getPokemon.baseStats.attack}
 								</Text>
 							</Badge>
 						</WrapItem>
-						{user.location && (
+						{pokemon.getPokemon.species && (
 							<WrapItem>
 								<Badge
 									variant="solid"
@@ -143,21 +148,21 @@ export default function UserComponent({ user, constraintsRef }: IUserProps): JSX
 									gap="1"
 									borderRadius="md"
 								>
-									<FiMapPin />
+									<GiShield />
 									<Text fontSize="sm" textTransform="none" fontWeight="normal">
-										{user.location}
+										{pokemon.getPokemon.baseStats.defense}
 									</Text>
 								</Badge>
 							</WrapItem>
 						)}
 					</Wrap>
 
-					{user.bio && (
-						<>
-							<Divider orientation="horizontal" />
-							<Text color="white">{user.bio}</Text>
-						</>
-					)}
+					<Divider orientation="horizontal" />
+					<List>
+						<ListItem>{pokemon.getPokemon.abilities.first}</ListItem>
+						<ListItem>{pokemon.getPokemon.abilities?.second}</ListItem>
+						<ListItem>{pokemon.getPokemon.abilities?.hidden}</ListItem>
+					</List>
 				</Stack>
 			</Stack>
 		</MotionBox>
